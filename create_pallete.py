@@ -14,20 +14,42 @@ html_color_name='<div style="width:8%; display: table-cell">{}</div>'
 html_use_url='<div style="display: table-cell"><a href={}>{}</a></div>'
 html_close_div='</div>'
 
-def print_colours(colours):
+colors = []
+
+class ColorEntry:
+    
+    def __init__(self, line):
+        self.color = line
+    
+    color = "#000000"
+    filename = "filename"
+    string = 0
+    colorName = "warmGray"
+
+
+def read_color_to_list():
+    with open(".tmp.colors") as f:
+            tmp = f.read().splitlines()
+    for i in tmp:
+        colors.append(ColorEntry(i))
+
+
+def print_colors(colors):
 	print (html_table)
-	for i in colours:
+	for i in colors:
 		print (html_row)
-		c = str(binascii.hexlify(struct.pack('BBB',*i)),'ascii')
-		print (html_color.format(c))
-		print (html_color_code.format(c))
-		print (html_color_name.format("warmGray"))
+		print (html_color.format(i.color))
+		print (html_color_code.format(i.color))
+		print (html_color_name.format(i.colorName))
 		#TODO: use urls
 		print (html_use_url.format("ProjectQml/Hecateus/bla/bla/someFile.qml#233","Hecateus/bla/bla/someFile.qml#233"))
 		print (html_close_div)
 	print (html_close_div)
 
-def step (r,g,b, repetitions=1):
+def step (t_rgb, repetitions=1):
+	r = t_rgb[0]
+	g = t_rgb[1]
+	b = t_rgb[2]
 	lum = math.sqrt( .241 * r + .691 * g + .068 * b )
 	h, s, v = colorsys.rgb_to_hsv(r,g,b)
 	h2 = int(h * repetitions)
@@ -35,18 +57,15 @@ def step (r,g,b, repetitions=1):
 	v2 = int(v * repetitions)
 	return (h2, lum, v2)
 
-colours_length = 1000
-colours = []
-for i in range(1, colours_length):
-	colours.append (
-		[
-			int(random.random()*256),
-			int(random.random()*256),
-			int(random.random()*256)
-		]
-	)
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+def rgb_to_hex(rgb):
+    return '#%02x%02x%02x' % rgb
 
 
-colours.sort(key=lambda rgb : step(rgb[0],rgb[1],rgb[2],8))
-
-print_colours(colours)
+read_color_to_list()
+colors.sort(key=lambda color_entry : step(hex_to_rgb(color_entry.color),16))
+print_colors(colors)
