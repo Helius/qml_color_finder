@@ -9,8 +9,8 @@ import binascii
 html_table='<div style="width:100%; display:table; table-layout: fixed;">'
 html_row='<div style="display: table-row; height:20px">'
 html_color='<div style="width:20%; background-color:{}; display: table-cell"></div>'
-html_color_code='<div style="width:5%; padding-left:1%; display: table-cell">{}</div>'
-html_color_name='<div style="width:8%; display: table-cell">{}</div>'
+html_color_code='<div style="width:8%; padding-left:1%; display: table-cell">{}</div>'
+html_color_name='<div style="width:12%; display: table-cell">{}</div>'
 html_use_url='<div style="display: table-cell"><a href={}>{}</a></div>'
 html_close_div='</div>'
 
@@ -19,7 +19,7 @@ colors = []
 class ColorEntry:
     
     def __init__(self, line):
-        self.color = line
+        self.filename, self.color, self.colorName = line.split(";")
     
     color = "#000000"
     filename = "filename"
@@ -42,7 +42,7 @@ def print_colors(colors):
 		print (html_color_code.format(i.color))
 		print (html_color_name.format(i.colorName))
 		#TODO: use urls
-		print (html_use_url.format("ProjectQml/Hecateus/bla/bla/someFile.qml#233","Hecateus/bla/bla/someFile.qml#233"))
+		print (html_use_url.format(i.filename, i.filename))
 		print (html_close_div)
 	print (html_close_div)
 

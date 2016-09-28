@@ -83,5 +83,5 @@ colors = process_files()
 
 with open(".tmp.colors", 'w') as f:
     for item in colors:
-        f.write("%s\n" % item)
+        f.write("%s;%s;%s\n" % (item[0], item[1], item[2]))
 
