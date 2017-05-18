@@ -1,0 +1,3 @@
+Using:
+	python collect_colors.py /project/v4android/src/qmlsdk/ProjectsQml https://gitlab.2gis.ru
+	./run.sh
